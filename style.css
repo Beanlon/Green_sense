@@ -1,0 +1,770 @@
+:root{
+	--max-width: 1100px;
+	--bg: #f5f5f5;
+	--text: #3b693b;
+	--accent: #424242;
+	--nav-bg: #3b693b;
+	--card-bg: #fff;
+	--card-text: #555;
+	/* button color variables (can be overridden in dark mode) */
+	--button-bg: #0a0a0a; /* default button background */
+	--button-text: #fff; /* default button text */
+	--button-contrast-bg: #fff; /* color to contrast to on click (light mode) */
+	--button-contrast-text: var(--accent);
+}
+
+/* -----------------------------
+   Animations (entry + micro-interactions)
+   Appended only — does not change existing layout rules.
+   ----------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+}
+
+@keyframes fa-de-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fa-pop {
+    from { opacity: 0; transform: translateY(6px) scale(.995); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fa-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Base: softly hide then reveal major sections so animations don't jump layout */
+nav,
+.hero-section,
+.description,
+.key-features,
+.benefits,
+.site-footer {
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: fa-de-up 520ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+
+nav { animation-delay: 40ms; }
+.hero-section { animation-delay: 90ms; }
+.description { animation-delay: 140ms; }
+.key-features { animation-delay: 200ms; }
+.benefits { animation-delay: 260ms; }
+.site-footer { animation-delay: 320ms; }
+
+/* Hero inner content pops in a touch later for readability */
+.hero-section .hero-text,
+.hero-section h1,
+.hero-section p {
+    opacity: 0;
+    animation: fa-pop 420ms cubic-bezier(.2,.9,.2,1) forwards;
+    animation-delay: 180ms;
+}
+
+/* Nav links: small stagger */
+nav a {
+    opacity: 0;
+    animation: fa-fade 420ms ease forwards;
+    animation-delay: 80ms;
+}
+nav a:nth-child(1) { animation-delay: 80ms; }
+nav a:nth-child(2) { animation-delay: 120ms; }
+nav a:nth-child(3) { animation-delay: 160ms; }
+nav a:nth-child(4) { animation-delay: 200ms; }
+
+/* Cards: staggered pop-in inside their grids */
+.key-features .grid .feature-card {
+    opacity: 0;
+    transform-origin: center top;
+    will-change: transform, opacity;
+    animation: fa-pop 480ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+.key-features .grid .feature-card:nth-child(1) { animation-delay: 220ms; }
+.key-features .grid .feature-card:nth-child(2) { animation-delay: 260ms; }
+.key-features .grid .feature-card:nth-child(3) { animation-delay: 300ms; }
+.key-features .grid .feature-card:nth-child(4) { animation-delay: 340ms; }
+.key-features .grid .feature-card:nth-child(5) { animation-delay: 380ms; }
+.key-features .grid .feature-card:nth-child(6) { animation-delay: 420ms; }
+
+/* Benefits cards similar stagger */
+.benefits-list .benefit-card {
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: fa-pop 420ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+.benefits-list .benefit-card:nth-child(1) { animation-delay: 260ms; }
+.benefits-list .benefit-card:nth-child(2) { animation-delay: 300ms; }
+.benefits-list .benefit-card:nth-child(3) { animation-delay: 340ms; }
+.benefits-list .benefit-card:nth-child(4) { animation-delay: 380ms; }
+
+/* Links and buttons micro interactions (hover + focus) — non-layout changing */
+.feature-link,
+button {
+    transition: transform 180ms ease, box-shadow 180ms ease, opacity 120ms ease;
+    will-change: transform, opacity;
+}
+
+.feature-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
+.feature-card:active { transform: translateY(-2px) scale(.998); }
+.feature-card a:hover { transform: translateY(-3px); }
+
+/* Subtle accent on hover for benefit cards */
+.benefit-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.06); }
+
+/* Keep animations non-invasive for small screens by shortening durations */
+@media (max-width: 600px) {
+    nav, .hero-section, .description, .key-features, .benefits, .site-footer { animation-duration: 420ms; }
+    .key-features .grid .feature-card { animation-duration: 380ms; }
+}
+
+/* Centered CTA styles */
+.cta-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+.cta-inner {
+    text-align: center;
+    max-width: 920px;
+    width: 100%;
+}
+.cta-inner h2 {
+    font-size: 28px;
+    margin: 0 0 12px;
+    color: var(--text);
+    margin-bottom: 40px;
+}
+.cta-button {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: #296129;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.12);
+    transition: transform 160ms ease, box-shadow 160ms ease, opacity 120ms ease;
+}
+.cta-button:hover,
+.cta-button:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 22px rgba(0,0,0,0.12);
+    opacity: 0.98;
+}
+
+@media (max-width: 520px) {
+    .cta-inner h2 { font-size: 20px; }
+    .cta-section { padding: 28px 12px; }
+}
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+}
+
+a {
+    color: white;
+    font-weight: bold;
+	font-size: 22px;
+	text-decoration: none;
+}
+
+nav {
+    display: flex;
+    background: var(--nav-bg);
+    align-items: center;
+    padding: 0 200px;
+    height: 65px;
+}
+
+nav.left {
+    justify-content: flex-start;
+}
+
+.hero-section {
+    display: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 200px;
+    margin: 0; /* removed outer margin per request */
+}
+
+
+.hero-section {
+    position: relative; /* create stacking context for pseudo elements */
+    overflow: hidden;
+    min-height: 48vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    color: #fff; /* ensures text is readable on the image */
+}
+
+.hero-section .hero-text {
+    max-width: 900px;
+    text-align: center;
+    z-index: 2; /* place text above the image and overlay */
+}
+
+/* Background image layer with blur + opacity */
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('image1.jpg'); /* replace with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* reduced blur so background remains subtle and doesn't affect UI elements */
+    filter: blur(1px);
+    transform: scale(1.02); /* small scale to hide blurred edges */
+    opacity: 0.7; /* adjust opacity (0.0 - 1.0) to dim the image */
+    z-index: 0;
+}
+
+/* Optional dark overlay between image and text for better contrast */
+.hero-section::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.18); /* tweak to increase/decrease dimming */
+    z-index: 1;
+}
+
+
+.hero-section h1 {
+    font-size: 50px;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.hero-section p {
+    font-size: 20px;
+    color: white
+}
+
+.gridbtn {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+button {
+    padding:0.5rem 1rem;
+	cursor:pointer;
+	border:0;
+	font-family: 'Poppins', sans-serif;
+	font-size: 20px;
+	border-radius:10px;
+	color: var(--button-text);
+	box-shadow: 0 6px 10px rgba(0, 0, 0, 0.61);
+    transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+}
+
+/* Ensure any buttons inside the hero are not affected by the blurred background */
+.hero-section button,
+.hero-section #btn-primary,
+.hero-section #btn-secondary {
+    position: relative;
+    z-index: 3;
+}
+
+#btn-primary {
+    background: #296129;
+}
+
+#btn-secondary {
+    background: #dab202;
+}
+
+/* Hover / focus / active styles for primary and secondary buttons */
+#btn-primary:hover,
+#btn-primary:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.5);
+    opacity: 0.98;
+    outline: none;
+}
+#btn-primary:active {
+    transform: translateY(0) scale(0.99);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.18);
+}
+
+#btn-secondary:hover,
+#btn-secondary:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.5);
+    opacity: 0.98;
+    outline: none;
+}
+#btn-secondary:active {
+    transform: translateY(0) scale(0.99);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.14);
+}
+
+/* Improve keyboard focus visibility */
+button:focus-visible {
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.08), 0 8px 14px rgba(0,0,0,0.12);
+}
+
+.description {
+    display:flex;
+    justify-content: center;
+    margin: 20px auto;
+    font-size: 18px;
+    padding: 0 200px;
+    line-height: 1.6;
+    color: var(--card-text);
+    text-align: center;
+}
+
+.description h2 {
+    font-size: 50px;
+
+}
+
+.description p {
+    max-width: 850px;
+    font-size: 20px;
+    margin-bottom: 41px;
+}
+
+.key-features {
+    /* container for the feature cards */
+    display: block; /* block-level section */
+    background: #ececec;
+    padding: 20px 200px; /* add top padding to prevent margin collapse with previous section */
+    gap: 20px;
+    margin: 30px auto;
+    box-sizing: border-box;
+    /* inset-like lowered background shadow */
+    box-shadow: inset 0 8px 18px rgba(0,0,0,0.16), inset 0 -6px 12px rgba(255,255,255,0.02), 0 6px 18px rgba(0,0,0,0.06);
+    padding-bottom: 30px;
+}
+
+
+
+.keytext h2 {
+    font-size: 50px;
+    font-weight: 600;
+    max-width: 900px;
+    margin-top: 0px;
+}
+
+.grid {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.keytext {
+    padding-top: 10px;
+}
+
+.feature-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 900px;
+    text-align: center;
+    color: var(--card-text);
+}
+
+/* Link shown in each feature card */
+.feature-link {
+    display: inline-block;
+    margin-top: auto; /* push the link to the bottom of the flex column */
+    align-self: center; /* center horizontally in the card */
+    padding: 8px 12px;
+    background: var(--nav-bg);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.feature-link:hover { opacity: 0.95; }
+
+/* Make feature cards taller-than-wide and ensure all cards inside .key-features share the same size */
+.key-features .grid {
+    align-items: stretch; /* ensure children stretch to same height */
+
+}
+
+.key-features .feature-card {
+    max-width: none;    /* override the global max-width */
+    flex: 1 1 280px;
+    max-width: 320px;
+    min-height: 320px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 17px;
+    padding: 20px;
+}
+
+.benefits {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 300px;
+    margin: 40px 0;
+    gap: 60px;
+}
+
+.benefits-text h2{
+   flex: 5;
+   font-size: 50px;
+   margin: 0;
+}
+
+.benefits-text p {
+  max-width: 50ch;                 /* keep readable line-length */
+  width: min(100%, 50ch);          /* shrink on small screens */
+  margin: 0 auto;                  /* center the paragraph block */
+  line-height: 1.6;                /* comfortable spacing */
+  overflow-wrap: anywhere;         /* break long words if needed */
+  word-break: normal;              /* prefer normal breaks */
+  hyphens: auto;                   /* allow hyphenation where supported */
+  font-size: 19px;
+}
+
+.benefits-list {
+    display:center;
+    flex: 5;
+    justify-content: center;
+}
+/* Footer styles */
+
+/* Benefit cards (kept for layout consistency) */
+.benefit-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    color: var(--card-text);
+    margin-bottom: 15px;
+}
+
+.benefit-card h3 { margin: 0; }
+.benefit-card p { margin: 0; font-size: 17px; }
+
+/* Site footer: modern, responsive and accessible */
+.site-footer {
+    background: linear-gradient(90deg, #2f6f2f 0%, #235b23 100%);
+    color: #fff;
+    padding: 48px 200px;
+    box-sizing: border-box;
+}
+.site-footer .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.footer-brand .logo {
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+}
+.footer-brand p { margin: 0; color: rgba(255,255,255,0.85); max-width: 34ch; }
+
+.footer-columns {
+    display: flex;
+    gap: 28px;
+    flex: 1 1 640px;
+}
+.footer-col { min-width: 160px; }
+.footer-col h4 { margin: 0 0 12px; font-size: 15px; color: rgba(255,255,255,0.95); }
+.footer-col a { display: block; color: rgba(255,255,255,0.92); text-decoration: none; margin-bottom: 8px; font-size: 14px; }
+.footer-col a:hover, .footer-col a:focus { color: var(--button-contrast-bg); text-decoration: underline; }
+
+.footer-cta { display: flex; gap: 12px; align-items: center; }
+.subscribe { display:flex; gap:8px; align-items:center; }
+.subscribe input[type="email"] {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 0;
+    min-width: 200px;
+    outline: none;
+}
+.subscribe button {
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: 0;
+    cursor: pointer;
+}
+
+.footer-social { display:flex; gap:10px; margin-top: 6px; }
+.social-btn {
+    width: 40px; height: 40px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.08); color: inherit; text-decoration: none; transition: transform .12s ease, background .12s ease;
+}
+.social-btn:hover, .social-btn:focus { transform: translateY(-3px); background: rgba(255,255,255,0.14); }
+
+.footer-legal {
+    width: 100%;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 22px;
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.78);
+    font-size: 13px;
+}
+
+/* Small screens: stack footer elements */
+@media (max-width: 908px) {
+    .site-footer { padding: 40px 50px; }
+    .footer-inner { flex-direction: column; align-items: center; }
+    .footer-brand { align-items: center; text-align: center; }
+    .footer-columns { flex-direction: column; gap: 18px; width: 100%; align-items: center; }
+    .footer-col { text-align: center; }
+    .footer-cta { width: 100%; justify-content: center; }
+    .footer-legal { flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+}
+
+@media (max-width: 650px) {
+    .site-footer .footer-inner {display: block; text-align: center;}
+    .site-footer .footer-inner .footer-brand{margin-bottom: 30px;}
+    .site-footer .footer-inner .footer-social{display: block;text-align: center; margin-bottom: 30px;}
+    .site-footer { padding: 28px 18px; }
+    .site-footer .footer-inner .footer-contact a{ gap: 20px; font-size: 19px;}
+    .site-footer .footer-inner .footer-contact .footer-social{ gap: 10px; font-size: 17px;}
+    .footer-brand .logo { font-size: 18px; }
+    .subscribe input[type="email"] { min-width: 140px; }
+}
+
+@media (max-width: 1761px) {
+    .benefits {
+        flex-direction: column;
+        padding: 0 100px;
+        text-align: center;
+    }
+    .benefits-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width:1235px) {
+    nav {
+        padding-left:100px;
+        padding-right:100px;
+    }
+
+    .key-features {
+        padding-left:100px;
+        padding-right:100px;
+    }
+
+}
+
+@media (max-width:980px) {
+    .cta-section {
+        padding: 0px 50px;
+    }
+    .cta-inner h2 {
+        font-size: 24px;
+    }
+
+}
+
+@media (max-width:908px) {
+
+    nav {
+        padding-left:50px;
+        padding-right:50px;
+    }
+
+    .hero-section {
+        padding-left:50px;
+        padding-right:50px;
+    }
+
+    .hero-section h1 {
+        font-size: 43px;
+    }
+
+    .hero-section p {
+        font-size: 18px;
+    }
+
+    .description {
+        padding-left:50px;
+        padding-right:50px;
+    }
+
+    .description h2 {
+        font-size: 40px;
+    }
+
+    .description p {
+        font-size: 18px;
+    }
+
+    .key-features {
+        padding-left:50px  ;
+        padding-right:50px;
+    }
+
+    .key-features .keytext h2 {
+        font-size: 40px;
+    }
+
+    .grid {
+        gap: 15px;
+    }
+
+    .key-features .feature-card {
+        font-size: 14px;
+    }
+
+    .benefits {
+        padding-left:50px;
+        padding-right:50px;
+    }
+
+    .benefits-text h2 {
+        font-size: 40px;
+    }
+
+    .benefits-text p {
+        font-size: 18px;
+    }
+}
+
+
+@media (max-width:794px) {
+
+    nav {
+        padding: 0 23px;
+    }
+
+
+    
+    .hero-section {
+        padding: 0 23px;
+    }
+    
+    .hero-section h1 {
+        font-size: 36px;
+    }
+
+    .hero-section p {
+        font-size: 16px;
+    }
+    .description {
+        padding: 0 23px;
+    }
+    .description h2 {
+        font-size: 32px;
+    }
+    .description p {
+        font-size: 16px;
+    }
+    .key-features {
+        padding: 20 23px;
+    }
+    .key-features .keytext h2 {
+        font-size: 32px;
+    }
+    .grid {
+        display: block;
+    }
+
+    /* Layout two key-feature cards per row on narrow screens */
+    .key-features .grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .key-features .feature-card {
+        flex: 0 0 calc(50% - 12px);
+        max-width: calc(50% - 12px);
+        min-height: 240px; /* slightly reduced height for small screens */
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    .benefits-list {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width:648px) {
+
+    .hero-section .hero-text h1 {
+        font-size: 35px;
+    }
+    .hero-section p {
+        font-size: 15px;
+    }
+    
+}
+
+@media (max-width:543px) {
+
+    .hero-section .hero-text h1 {
+        font-size: 30px;
+    }
+
+    /* Make key-feature cards stack as a single column on very small screens */
+    .key-features .grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+        padding-bottom: 30px;
+    }
+
+    .key-features .feature-card {
+        flex: 0 0 100%;
+        max-width: 100%;
+        min-height: 200px; /* reduced height for mobile */
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    /* Tighten paddings on very small screens */
+    nav,
+    .hero-section,
+    .description,
+    .key-features {
+        padding: 0 12px;
+    }
+
+    .hero-section h1 { font-size: 34px; }
+    .hero-section p  { font-size: 14px; }
+
+}
